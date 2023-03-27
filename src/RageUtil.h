@@ -3,7 +3,6 @@
 #ifndef RAGE_UTIL_H
 #define RAGE_UTIL_H
 
-#include <algorithm>
 #include <map>
 #include <random>
 #include <vector>
@@ -26,7 +25,7 @@ class RageFileDriver;
 extern const RString CUSTOM_SONG_PATH;
 
 /** @brief If outside the range from low to high, bring it within range. */
-#define clamp(val,low,high)	std::clamp( val, low, high )
+#define clamp(val,low,high)		( std::max( (low), std::min((val),(high)) ) )
 
 /**
  * @brief Scales x so that l1 corresponds to l2 and h1 corresponds to h2.
@@ -184,20 +183,6 @@ static inline T enum_cycle( T val, int iMax, int iAmt = 1 )
 	return static_cast<T>( iVal );
 }
 
-namespace Endian
-{
-	// When std::endian is supported by all desired compilers, we can eliminate the #ifdefs
-	// (At least) the current compiler used for the Ubuntu 20.04 build does not support this.
-#if defined(__BYTE_ORDER__)
-	inline constexpr bool little = __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__;
-	inline constexpr bool big    = __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__;
-#elif defined(_WIN32)
-	inline constexpr bool little = true;
-	inline constexpr bool big    = false;
-#else
-#error "unknown byte order"
-#endif
-}
 
 /* We only have unsigned swaps; byte swapping a signed value doesn't make sense.
  *
@@ -230,12 +215,21 @@ inline uint16_t Swap16( uint16_t n )
 }
 #endif
 
-inline uint32_t Swap32LE( uint32_t n ) { return Endian::little ? n : Swap32( n ); }
-inline uint32_t Swap24LE( uint32_t n ) { return Endian::little ? n : Swap24( n ); }
-inline uint16_t Swap16LE( uint16_t n ) { return Endian::little ? n : Swap16( n ); }
-inline uint32_t Swap32BE( uint32_t n ) { return Endian::big    ? n : Swap32( n ); }
-inline uint32_t Swap24BE( uint32_t n ) { return Endian::big    ? n : Swap24( n ); }
-inline uint16_t Swap16BE( uint16_t n ) { return Endian::big    ? n : Swap16( n ); }
+#if defined(ENDIAN_LITTLE)
+inline uint32_t Swap32LE( uint32_t n ) { return n; }
+inline uint32_t Swap24LE( uint32_t n ) { return n; }
+inline uint16_t Swap16LE( uint16_t n ) { return n; }
+inline uint32_t Swap32BE( uint32_t n ) { return Swap32( n ); }
+inline uint32_t Swap24BE( uint32_t n ) { return Swap24( n ); }
+inline uint16_t Swap16BE( uint16_t n ) { return Swap16( n ); }
+#else
+inline uint32_t Swap32BE( uint32_t n ) { return n; }
+inline uint32_t Swap24BE( uint32_t n ) { return n; }
+inline uint16_t Swap16BE( uint16_t n ) { return n; }
+inline uint32_t Swap32LE( uint32_t n ) { return Swap32( n ); }
+inline uint32_t Swap24LE( uint32_t n ) { return Swap24( n ); }
+inline uint16_t Swap16LE( uint16_t n ) { return Swap16( n ); }
+#endif
 
 class MersenneTwister : public std::mt19937
 {

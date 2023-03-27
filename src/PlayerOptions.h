@@ -82,11 +82,10 @@ public:
 		m_fModTimerOffset(0), m_SpeedfModTimerOffset(1.0f),
 		m_fDrawSize(0), m_SpeedfDrawSize(1.0f),
 		m_fDrawSizeBack(0), m_SpeedfDrawSizeBack(1.0f),
-		m_bMuteOnError(false), 
+		m_bMuteOnError(false), m_FailType(FailType_Immediate),
 		m_bStealthType(false), m_bStealthPastReceptors(false),
 		m_bDizzyHolds(false), m_bZBuffer(false),
 		m_bCosecant(false),
-		m_FailType(FailType_Immediate),
 		m_MinTNSToHideNotes(PREFSMAN->m_MinTNSToHideNotes)
 	{
 		m_sNoteSkin = "";
@@ -133,7 +132,6 @@ public:
 	bool operator==( const PlayerOptions &other ) const;
 	bool operator!=( const PlayerOptions &other ) const { return !operator==(other); }
 	PlayerOptions& operator=(PlayerOptions const& other);
-	PlayerOptions(const PlayerOptions& other) { operator=(other); }
 
 	/** @brief The various acceleration mods. */
 	enum Accel {

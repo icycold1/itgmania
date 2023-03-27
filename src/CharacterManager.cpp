@@ -90,6 +90,7 @@ Character* CharacterManager::GetDefaultCharacter()
 
 	/* We always have the default character. */
 	FAIL_M("There must be a default character available!");
+	return nullptr;
 }
 
 void CharacterManager::DemandGraphics()

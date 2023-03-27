@@ -3238,7 +3238,6 @@ bool ScreenEdit::InputPlay( const InputEventPlus &input, EditButton EditB )
 				break;
 
 		// fall through to input handling logic:
-		[[fallthrough]];
 		case PLAYER_1:
 			{
 				switch( gbt )
@@ -5256,12 +5255,12 @@ void ScreenEdit::HandleAlterMenuChoice(AlterMenuChoice c, const std::vector<int>
 		case tempo:
 		{
 			// This affects all steps.
-			const auto tt = static_cast<TempoType>(answers[c]);
+			AlterType at = (AlterType)answers[c];
 			float fScale = -1;
 
-			switch( tt )
+			switch( at )
 			{
-					DEFAULT_FAIL( tt );
+					DEFAULT_FAIL( at );
 				case compress_2x:	fScale = 0.5f;		break;
 				case compress_3_2:	fScale = 2.0f/3;	break;
 				case compress_4_3:	fScale = 0.75f;		break;

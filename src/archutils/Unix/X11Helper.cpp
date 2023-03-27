@@ -204,8 +204,7 @@ bool X11Helper::SetWMFullscreenMonitors( const DisplaySpec &target )
 	{
 		auto mon = std::find_if( screens, end, [&]( XineramaScreenInfo &screen ) {
 			return screen.x_org == target.currentBounds().left && screen.y_org == target.currentBounds().top
-				   && screen.width >= 0 && static_cast<uint32_t>(screen.width) == target.currentMode()->width
-				   && screen.height >= 0 && static_cast<uint32_t>(screen.height) == target.currentMode()->height;
+				   && screen.width == target.currentMode()->width && screen.height == target.currentMode()->height;
 		} );
 		if (mon != end)
 		{
@@ -215,7 +214,7 @@ bool X11Helper::SetWMFullscreenMonitors( const DisplaySpec &target )
 	}
 
 	XFree( screens );
-	XWindowAttributes attr{};
+	XWindowAttributes attr = {0};
 	if (!found_bounds || !XGetWindowAttributes( Dpy, Win, &attr ))
 	{
 		return false;
@@ -223,7 +222,7 @@ bool X11Helper::SetWMFullscreenMonitors( const DisplaySpec &target )
 
 	SetWMState( attr.root, Win, 1, XInternAtom( Dpy, "_NET_WM_STATE_FULLSCREEN", False ));
 
-	XClientMessageEvent xclient{};
+	XClientMessageEvent xclient = {0};
 	xclient.type = ClientMessage;
 	xclient.window = Win;
 	xclient.message_type = XInternAtom( Dpy, "_NET_WM_FULLSCREEN_MONITORS", False );

@@ -96,7 +96,7 @@ void Profile::ClearSongs()
 int Profile::HighScoresForASong::GetNumTimesPlayed() const
 {
 	int iCount = 0;
-	for (const auto& i : m_StepsHighScores)
+	for (std::pair<StepsID, HighScoresForASteps> const &i : m_StepsHighScores)
 	{
 		iCount += i.second.hsl.GetNumTimesPlayed();
 	}
@@ -106,7 +106,7 @@ int Profile::HighScoresForASong::GetNumTimesPlayed() const
 int Profile::HighScoresForACourse::GetNumTimesPlayed() const
 {
 	int iCount = 0;
-	for (const auto& i : m_TrailHighScores)
+	for (std::pair<TrailID const, HighScoresForATrail> const &i : m_TrailHighScores)
 	{
 		iCount += i.second.hsl.GetNumTimesPlayed();
 	}
@@ -394,7 +394,7 @@ float Profile::GetSongsActual( StepsType st, Difficulty dc ) const
 	{
 		Song* pSong = id.first.ToSong();
 
-		CHECKPOINT_M( ssprintf("Profile::GetSongsActual: %p", static_cast<void*>(pSong)) );
+		CHECKPOINT_M( ssprintf("Profile::GetSongsActual: %p", pSong) );
 
 		// If the Song isn't loaded on the current machine, then we can't 
 		// get radar values to compute dance points.
@@ -411,7 +411,7 @@ float Profile::GetSongsActual( StepsType st, Difficulty dc ) const
 		{
 			const StepsID &sid = j.first;
 			Steps* pSteps = sid.ToSteps( pSong, true );
-			CHECKPOINT_M( ssprintf("Profile::GetSongsActual: song %p, steps %p", static_cast<void*>(pSong), static_cast<void*>(pSteps)) );
+			CHECKPOINT_M( ssprintf("Profile::GetSongsActual: song %p, steps %p", pSong, pSteps) );
 
 			// If the Steps isn't loaded on the current machine, then we can't 
 			// get radar values to compute dance points.
@@ -421,7 +421,7 @@ float Profile::GetSongsActual( StepsType st, Difficulty dc ) const
 			if( pSteps->m_StepsType != st )
 				continue;
 
-			CHECKPOINT_M( ssprintf("Profile::GetSongsActual: n %s = %p", sid.ToString().c_str(), static_cast<void*>(pSteps)) );
+			CHECKPOINT_M( ssprintf("Profile::GetSongsActual: n %s = %p", sid.ToString().c_str(), pSteps) );
 			if( pSteps->GetDifficulty() != dc )
 			{
 				continue;	// skip
@@ -1611,7 +1611,7 @@ XNode* Profile::SaveGeneralDataCreateNode() const
 
 	{
 		XNode* pNumSongsPlayedByStyle = pGeneralDataNode->AppendChild("NumSongsPlayedByStyle");
-		for (const auto& iter : m_iNumSongsPlayedByStyle)
+		for (std::pair<StyleID const, int> const iter : m_iNumSongsPlayedByStyle)
 		{
 			const StyleID &s = iter.first;
 			int iNumPlays = iter.second;

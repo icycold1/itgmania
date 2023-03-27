@@ -117,6 +117,7 @@ RString DSound::Init()
 
 		DSCAPS Caps;
 		Caps.dwSize = sizeof(Caps);
+		HRESULT hr;
 		if( FAILED(hr = m_pDS->GetCaps(&Caps)) )
 		{
 			LOG->Warn( hr_ssprintf(hr, "m_pDS->GetCaps failed") );
@@ -210,7 +211,7 @@ RString DSoundBuf::Init( DSound &ds, DSoundBuf::hw hardware,
 	memset( &format, 0, sizeof(format) );
 	format.dwSize = sizeof(format);
 
-	if (IsWindowsVistaOrGreater())
+	if (at_least_vista())
 	{
 		format.dwFlags = DSBCAPS_GETCURRENTPOSITION2 | DSBCAPS_GLOBALFOCUS | DSBCAPS_CTRLVOLUME | DSBCAPS_TRUEPLAYPOSITION;
 	}

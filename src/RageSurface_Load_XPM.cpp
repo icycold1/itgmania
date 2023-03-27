@@ -53,7 +53,7 @@ RageSurface *RageSurface_Load_XPM( char * const *xpm, RString &error )
 			continue;
 
 		RString clr = color.substr( color_length+4 );
-		unsigned int r, g, b;
+		int r, g, b;
 		if( sscanf( clr, "%2x%2x%2x", &r, &g, &b ) != 3 )
 			continue;
 		RageSurfaceColor colorval;

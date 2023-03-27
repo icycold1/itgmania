@@ -68,12 +68,6 @@ namespace Enum
 	}
 
 	void SetMetatable( lua_State *L, LuaReference &EnumTable, LuaReference &EnumIndexTable, const char *szName );
-
-	template<typename E>
-	constexpr auto to_integral(E e)
-	{
-		return static_cast<typename std::underlying_type<E>::type>(e);
-	}
 };
 
 const RString &EnumToString( int iVal, int iMax, const char **szNameArray, std::unique_ptr<RString> *pNameCache ); // XToString helper

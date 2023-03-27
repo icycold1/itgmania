@@ -176,8 +176,6 @@ public:
 	}
 #endif
 
-	bool isNull() const { return !m_pPtr; }
-
 private:
 	T *m_pPtr;
 

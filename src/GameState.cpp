@@ -1168,7 +1168,7 @@ void GameState::Update( float fDelta )
 		if( !m_bGoalComplete[p] && IsGoalComplete(p) )
 		{
 			m_bGoalComplete[p] = true;
-			MESSAGEMAN->Broadcast( (MessageID)(Message_GoalCompleteP1+Enum::to_integral(p)) );
+			MESSAGEMAN->Broadcast( (MessageID)(Message_GoalCompleteP1+p) );
 		}
 	}
 
@@ -1859,7 +1859,7 @@ StageResult GameState::GetStageResult( PlayerNumber pn ) const
 			{
 			case PLAYER_1:	return (m_fTugLifePercentP1>=0.5f)?RESULT_WIN:RESULT_LOSE;
 			case PLAYER_2:	return (m_fTugLifePercentP1<0.5f)?RESULT_WIN:RESULT_LOSE;
-			default:	FAIL_M("Invalid player for battle! Aborting...");
+			default:	FAIL_M("Invalid player for battle! Aborting..."); return RESULT_LOSE;
 			}
 		default: break;
 	}

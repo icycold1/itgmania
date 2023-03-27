@@ -120,6 +120,8 @@ namespace
 			i2 = i1;
 			i1 = iRem;
 		}
+
+		return i1;
 	}
 }
 

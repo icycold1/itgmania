@@ -153,8 +153,6 @@ MemoryCardDriver *MemoryCardDriver::Create()
 			ret = new ARCH_MEMORY_CARD_DRIVER;
 #endif
 			break;
-		default:
-			break;
 	}
 
 	if( !ret )

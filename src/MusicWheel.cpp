@@ -59,12 +59,9 @@ static SortOrder ForceAppropriateSort( PlayMode pm, SortOrder so )
 		case SORT_NONSTOP_COURSES:
 		case SORT_ENDLESS_COURSES:
 			so = SortOrder_Invalid;
-			break;
 		default:
-			break;
+			return so;
 	}
-	
-	return so;
 }
 
 MusicWheelItem *MusicWheel::MakeItem()
@@ -155,7 +152,7 @@ void MusicWheel::BeginScreen()
 		const std::vector<MusicWheelItemData *> &from = getWheelItemsData(SORT_MODE_MENU);
 		for( unsigned i=0; i<from.size(); i++ )
 		{
-			ASSERT( !from[i]->m_pAction.isNull() );
+			ASSERT( &*from[i]->m_pAction != nullptr );
 			if( from[i]->m_pAction->DescribesCurrentModeForAllPlayers() )
 			{
 				m_sLastModeMenuItem = from[i]->m_pAction->m_sName;
@@ -430,7 +427,7 @@ void MusicWheel::GetSongList( std::vector<Song*> &arraySongs, SortOrder so )
 			apAllSongs = SONGMAN->GetSongs(GAMESTATE->m_sPreferredSongGroup);
 			break;
 		}
-		[[fallthrough]];
+		// otherwise fall through
 	default:
 		apAllSongs = SONGMAN->GetAllSongs();
 		break;

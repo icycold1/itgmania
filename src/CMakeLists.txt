@@ -118,22 +118,6 @@ target_compile_definitions("${SM_EXE_NAME}" PRIVATE $<$<CONFIG:MinSizeRel>:MINSI
 target_compile_definitions("${SM_EXE_NAME}" PRIVATE
                            $<$<CONFIG:RelWithDebInfo>:RELWITHDEBINFO>)
 
-# For Apple Clang, CMAKE_<LANG>_COMPILER_ID will be set to AppleClang instead of Clang.
-if (POLICY CMP0025)
-  cmake_policy(SET CMP0025 NEW)
-endif()
-
-target_compile_options("${SM_EXE_NAME}" PRIVATE
-  $<$<CXX_COMPILER_ID:GNU>:
-    -Wall -Wextra -Wno-unused -Wno-unused-parameter -Wno-unknown-pragmas>
-  $<$<CXX_COMPILER_ID:Clang>:
-    -Wall -Wextra -Wno-unused -Wno-unused-parameter -Wno-unknown-pragmas -Wno-undefined-var-template>
-  $<$<CXX_COMPILER_ID:AppleClang>:
-    -Wall -Wextra -Wno-unused -Wno-unused-parameter -Wno-unknown-pragmas -Wno-undefined-var-template -Wno-deprecated-declarations -Wno-unused-command-line-argument>
-  $<$<CXX_COMPILER_ID:MSVC>:
-    /W4 /wd4100 /wd4189 /wd4244 /wd4267 /wd4702>
-)
-
 set(SM_COMPILE_FLAGS "")
 
 if(WITH_SSE2)
@@ -192,10 +176,7 @@ if(WIN32)
       COMMENT "Generating file to allow for easier stack traces.")
   endif()
 elseif(APPLE)
-  # TODO should we set CRASH_HANDLER and other things like LINUX does below? Why is that logic specfic to LINUX?
   target_compile_definitions("${SM_EXE_NAME}" PRIVATE BACKTRACE_METHOD_X86_DARWIN)
-  target_compile_definitions("${SM_EXE_NAME}" PRIVATE BACKTRACE_LOOKUP_METHOD_TEXT="dladdr")
-  target_compile_definitions("${SM_EXE_NAME}" PRIVATE BACKTRACE_LOOKUP_METHOD_DLADDR)
   target_compile_definitions("${SM_EXE_NAME}" PRIVATE MACOSX)
   set_target_properties(
     "${SM_EXE_NAME}"
