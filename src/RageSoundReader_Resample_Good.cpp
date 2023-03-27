@@ -110,7 +110,16 @@ namespace
 
 	int GCD( int i1, int i2 )
 	{
-		return std::gcd(i1, i2);
+		for(;;)
+		{
+			unsigned iRem = i2 % i1;
+			if( iRem == 0 )
+			{
+				return i1;
+			}
+			i2 = i1;
+			i1 = iRem;
+		}
 	}
 }
 

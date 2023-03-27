@@ -96,7 +96,7 @@ void Profile::ClearSongs()
 int Profile::HighScoresForASong::GetNumTimesPlayed() const
 {
 	int iCount = 0;
-	for (const std::pair<const StepsID, HighScoresForASteps>& i : m_StepsHighScores)
+	for (const auto& i : m_StepsHighScores)
 	{
 		iCount += i.second.hsl.GetNumTimesPlayed();
 	}
@@ -106,7 +106,7 @@ int Profile::HighScoresForASong::GetNumTimesPlayed() const
 int Profile::HighScoresForACourse::GetNumTimesPlayed() const
 {
 	int iCount = 0;
-	for (const std::pair<const TrailID, HighScoresForATrail>& i : m_TrailHighScores)
+	for (const auto& i : m_TrailHighScores)
 	{
 		iCount += i.second.hsl.GetNumTimesPlayed();
 	}
@@ -1611,7 +1611,7 @@ XNode* Profile::SaveGeneralDataCreateNode() const
 
 	{
 		XNode* pNumSongsPlayedByStyle = pGeneralDataNode->AppendChild("NumSongsPlayedByStyle");
-		for (const std::pair<StyleID const, int>& iter : m_iNumSongsPlayedByStyle)
+		for (const auto& iter : m_iNumSongsPlayedByStyle)
 		{
 			const StyleID &s = iter.first;
 			int iNumPlays = iter.second;
